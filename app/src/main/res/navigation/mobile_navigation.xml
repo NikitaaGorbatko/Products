@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_contacts">
+
+    <fragment
+        android:id="@+id/navigation_contacts"
+        android:name="nikitagorbatko.example.products.ui.contacts.ContactsFragment"
+        android:label="@string/title_contacts"
+        tools:layout="@layout/fragment_contacts" />
+
+    <fragment
+        android:id="@+id/navigation_orders"
+        android:name="nikitagorbatko.example.products.ui.orders.OrdersFragment"
+        android:label="@string/title_orders"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_products"
+        android:name="nikitagorbatko.example.products.ui.products.ProductsFragment"
+        android:label="@string/title_products"
+        tools:layout="@layout/fragment_notifications" />
+</navigation>
