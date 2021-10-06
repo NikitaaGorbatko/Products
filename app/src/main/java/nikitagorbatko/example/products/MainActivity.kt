@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import nikitagorbatko.example.products.ui.PermissionManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,72 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         //val contactListView = findViewById<ListView>(R.id.contacts_list_view)
 
-        showPhoneStatePermission()
+        PermissionManager.showPhoneStatePermission(applicationContext, this)
     }
 
-    private fun showPhoneStatePermission() {
-        val permissionCheck = ContextCompat.checkSelfPermission(
-            this, Manifest.permission.READ_CONTACTS
-        )
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.READ_CONTACTS
-                )
-            ) {
-                showExplanation(
-                    "Permission Needed",
-                    "Rationale",
-                    Manifest.permission.READ_CONTACTS,
-                    REQUEST_PERMISSION_PHONE_STATE
-                )
-            } else {
-                requestPermission(
-                    Manifest.permission.READ_CONTACTS,
-                    REQUEST_PERMISSION_PHONE_STATE
-                )
-            }
-        } else {
-            Toast.makeText(this@MainActivity, "Permission (already) Granted!", Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
-
-//    fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<String?>?,
-//        grantResults: IntArray
-//    ) {
-//        when (requestCode) {
-//            REQUEST_PERMISSION_PHONE_STATE -> if (grantResults.size > 0
-//                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-//            ) {
-//                Toast.makeText(this@MainActivity, "Permission Granted!", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(this@MainActivity, "Permission Denied!", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-
-    private fun showExplanation(
-        title: String,
-        message: String,
-        permission: String,
-        permissionRequestCode: Int
-    ) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(
-                android.R.string.ok
-            ) { dialog, id -> requestPermission(permission, permissionRequestCode) }
-        builder.create().show()
-    }
-
-    private fun requestPermission(permissionName: String, permissionRequestCode: Int) {
-        ActivityCompat.requestPermissions(this, arrayOf(permissionName), permissionRequestCode)
-    }
 }
 
-private const val REQUEST_PERMISSION_PHONE_STATE = 1
+
 

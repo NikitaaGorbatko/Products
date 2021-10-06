@@ -20,7 +20,6 @@ import androidx.loader.content.CursorLoader
 import nikitagorbatko.example.products.R
 import nikitagorbatko.example.products.ui.contacts.ContactsViewModel
 
-
 @SuppressLint("InlinedApi")
 private val FROM_COLUMNS: Array<String> = arrayOf(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)
 
@@ -56,8 +55,7 @@ var contactUri: Uri? = null
 // An adapter that binds the result Cursor to the ListView
 private var cursorAdapter: SimpleCursorAdapter? = null
 
-class ContactsFragment : Fragment()
-{
+class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private lateinit var contactsViewModel: ContactsViewModel
 
@@ -73,7 +71,17 @@ class ContactsFragment : Fragment()
 //        contactsViewModel.text.observe(viewLifecycleOwner, Observer {
 //            textView.text = it
 //        })
-        //loaderManager.initLoader(0, null, this)
+
+        cursorAdapter = SimpleCursorAdapter(
+                inflater.context,
+                R.layout.item_layout,
+                null,
+                FROM_COLUMNS,
+                TO_IDS,
+                0
+        )
+
+        loaderManager.initLoader(0, null, this)
         return root
     }
 
@@ -97,32 +105,30 @@ class ContactsFragment : Fragment()
 //        }
 //    }
 //
-//    override fun onCreateLoader(id: Int, args: Bundle?): androidx.loader.content.Loader<Cursor> {
-//        /*
-// * Makes search string into pattern and
-// * stores it in the selection array
-// */
-//        selectionArgs[0] = "%${searchString}%"
-//        // Starts the query
-//        activity?.let {
-//            return CursorLoader(
-//                it,
-//                ContactsContract.Contacts.CONTENT_URI,
-//                PROJECTION,
-//                SELECTION,
-//                selectionArgs,
-//                null
-//            )
-//        } ?: throw IllegalStateException()
-//    }
+    override fun onCreateLoader(id: Int, args: Bundle?): androidx.loader.content.Loader<Cursor> {
+        selectionArgs[0] = "%${searchString}%"
+            // Starts the query
+            activity?.let {
+                return CursorLoader(
+                    it,
+                    ContactsContract.Contacts.CONTENT_URI,
+                    PROJECTION,
+                    SELECTION,
+                    selectionArgs,
+                    null
+                )
+            } ?: throw IllegalStateException()
+    }
+
+
 //
-//    override fun onLoadFinished(loader: androidx.loader.content.Loader<Cursor>, data: Cursor?) {
-//        cursorAdapter?.swapCursor(data)
-//    }
-//
-//    override fun onLoaderReset(loader: androidx.loader.content.Loader<Cursor>) {
-//        cursorAdapter?.swapCursor(null)
-//    }
+    override fun onLoadFinished(loader: androidx.loader.content.Loader<Cursor>, data: Cursor?) {
+        cursorAdapter?.swapCursor(data)
+    }
+
+    override fun onLoaderReset(loader: androidx.loader.content.Loader<Cursor>) {
+        cursorAdapter?.swapCursor(null)
+    }
 //
 //    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 //        TODO("Not yet implemented")

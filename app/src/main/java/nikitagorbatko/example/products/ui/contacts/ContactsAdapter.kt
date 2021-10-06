@@ -1,4 +1,4 @@
-package nikitagorbatko.example.products
+package nikitagorbatko.example.products.ui.contacts
 
 import android.view.View
 import android.view.ViewGroup
